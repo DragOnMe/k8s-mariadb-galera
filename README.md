@@ -38,7 +38,7 @@ This YAML generates 1 headless service and statefulset and 1 general k8s service
 
 ### Create cluster
 ```bash
-$ kubectl create -f galera.yml
+$ kubectl create -f galera_k8s.yml
 ```
 
 ### Cleanup cluster
