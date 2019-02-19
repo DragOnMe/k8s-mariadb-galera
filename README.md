@@ -54,7 +54,8 @@ $ for i in $(seq 0 2); do kubectl delete pv datadir-mysql-$i; done
 ```bash
 $ git clone https://github.com/DragOnMe/k8s-mariadb-galera
 $ cd k8s-mariadb-galera-centos
-$ make
+$ sudo docker login -u $YOUR-DOCKERHUB-USERNAME
+$ sudo make
 ```
 Technical informations how the image works in detail can be found
 [here](k8s-mariadb-galera-centos/README.md)
