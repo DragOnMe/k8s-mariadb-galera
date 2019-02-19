@@ -1,6 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: galera-ss
+  labels:
+    app: mysql
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  selector:
+    app: mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
   name: galera
@@ -33,7 +46,8 @@ spec:
         fsGroup: 27
       containers:
       - name: mysql
-        image: drlee001/k8s-mariadb-galera-centos:v004-k8s113
+        #image: drlee001/k8s-mariadb-galera-centos:v004-k8s113
+        image: adfinissygroup/k8s-mariadb-galera-centos:v004
         imagePullPolicy: Always
         securityContext:
           runAsNonRoot: true
@@ -63,6 +77,14 @@ spec:
               fieldRef:
                 apiVersion: v1
                 fieldPath: metadata.namespace
+          - name: MYSQL_USER
+            value: mysql
+          - name: MYSQL_PASSWORD
+            value: mysql
+          - name: MYSQL_DATABASE
+            value: mydb
+          - name: MYSQL_ROOT_PASSWORD
+            value: mysql
   volumeClaimTemplates:
   - metadata:
       name: datadir
