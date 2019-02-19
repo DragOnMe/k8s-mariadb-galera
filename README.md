@@ -38,7 +38,7 @@ This YAML generates 1 headless service and statefulset and 1 general k8s service
 
 ### Create cluster
 ```bash
-$ kubectl create -f galera.yml
+$ kubectl create -f galera_k8s.yml
 ```
 
 ### Cleanup cluster
@@ -46,7 +46,7 @@ $ kubectl create -f galera.yml
 $ kubectl delete statefulset mysql
 $ kubectl delete svc galera
 $ kubectl delete pod mysql-0 mysql-1 mysql-2
-$ for i in $(seq 0 2); do kubectl delete pv datadir-mysql-$i; done
+$ for i in $(seq 0 2); do kubectl delete pvc datadir-mysql-$i; done
 ```
 
 
