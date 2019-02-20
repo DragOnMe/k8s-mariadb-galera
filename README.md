@@ -38,13 +38,15 @@ This YAML generates 1 headless service and statefulset and 1 general k8s service
 
 ### Create cluster
 ```bash
-$ kubectl create -f galera_k8s.yml
+$ kubectl create -f galera_ns.yaml
+$ kubectl apply -f galera_k8s.yml
 ```
 
 ### Cleanup cluster
 ```bash
 $ kubectl delete statefulset mysql
-$ kubectl delete svc galera
+$ kubectl delete svc galera-ss
+$ kubectl delete svc galera-hs
 $ kubectl delete pod mysql-0 mysql-1 mysql-2
 $ for i in $(seq 0 2); do kubectl delete pvc datadir-mysql-$i; done
 ```
@@ -55,7 +57,8 @@ $ for i in $(seq 0 2); do kubectl delete pvc datadir-mysql-$i; done
 $ git clone https://github.com/DragOnMe/k8s-mariadb-galera
 $ cd k8s-mariadb-galera-centos
 $ sudo docker login -u $YOUR-DOCKERHUB-USERNAME
-$ sudo make
+$ sudo make image
+$ sudo make push
 ```
 Technical informations how the image works in detail can be found
 [here](k8s-mariadb-galera-centos/README.md)
