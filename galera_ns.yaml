@@ -1,0 +1,5 @@
+# Namespace for galera service
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-galera

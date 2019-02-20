@@ -1,47 +1,57 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: galera-ss
-  labels:
-    app: mysql
-spec:
-  ports:
-  - port: 3306
-    name: mysql
-  selector:
-    app: mysql
+# Refer to https://github.com/adfinis-sygroup/openshift-mariadb-galera
 
----
-
+# Headless service for galera statefulset
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-  name: galera
+  namespace: ns-galera
+  name: galera-hs
   labels:
-    app: mysql
+    app: galera-ss
 spec:
   ports:
   - port: 3306
     name: mysql
   clusterIP: None
   selector:
-    app: mysql
+    app: galera-ss
+
+---
+
+# Client service for connecting to any MySQL instance for reads.
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ns-galera
+  name: galera-svc
+  labels:
+    app: galera-ss
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  selector:
+    app: galera-ss
 
 ---
 
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: mysql
+  namespace: ns-galera
+  name: galera-ss
 spec:
-  serviceName: "galera"
+  selector:
+    matchLabels:
+      app: galera-ss
+  serviceName: "galera-hs"
   replicas: 3
   template:
     metadata:
       labels:
-        app: mysql
+        app: galera-ss
       annotations:
         pod.alpha.kubernetes.io/initialized: "true"
     spec:
@@ -49,7 +59,7 @@ spec:
         runAsUser: 27
         fsGroup: 27
       containers:
-      - name: mysql
+      - name: mariadb
         image: drlee001/k8s-mariadb-galera-centos:v004-k8s113org
         imagePullPolicy: Always
         securityContext:
