@@ -44,8 +44,8 @@ $ kubectl apply -f galera_k8s.yml
 
 ### Cleanup cluster
 ```bash
-$ kubectl delete statefulset mysql
-$ kubectl delete svc galera-ss
+$ kubectl delete statefulset galera-ss
+$ kubectl delete svc galera-svc
 $ kubectl delete svc galera-hs
 $ kubectl delete pod mysql-0 mysql-1 mysql-2
 $ for i in $(seq 0 2); do kubectl delete pvc datadir-mysql-$i; done
