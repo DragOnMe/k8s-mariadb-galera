@@ -3,7 +3,7 @@
 Modified from github.com/adfinis-sygroup/openshift-mariadb-galera
 
 ## Requirements
-- Kubernetes 1.13+
+- Kubernetes v1.11.x to v1.13+
 - At least 1 default storage class(Tested NFS) for PV
 - Galera Cluster should be deployed on ns-galera namespace. This can be modified my editing galera_ns.yaml if needed.
 
