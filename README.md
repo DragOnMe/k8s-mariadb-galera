@@ -47,6 +47,7 @@ $ kubectl apply -f galera_k8s.yml
 ### Cleanup cluster
 ```bash
 $ kubectl delete -f galera_k8s.yaml
+$ for i in $(seq 0 2); do kubectl delete persistentvolumeclaim datadir-mysql-$i; done
 ```
 
 or
