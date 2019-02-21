@@ -1,5 +1,6 @@
 # Kubernetes Galera cluster
-  modified from github.com/adfinis-sygroup/openshift-mariadb-galera
+
+Modified from github.com/adfinis-sygroup/openshift-mariadb-galera
 
 ## Requirements
 - Kubernetes 1.13+
