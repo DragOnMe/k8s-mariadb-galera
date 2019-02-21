@@ -5,8 +5,9 @@ Modified from github.com/adfinis-sygroup/openshift-mariadb-galera
 ## Requirements
 - Kubernetes 1.13+
 - At least 1 default storage class(Tested NFS) for PV
+- Galera Cluster should be deployed on ns-galera namespace. This can be modified my editing galera_ns.yaml if needed.
 
-  To making storage-class nfs default, you need to do this
+  To make storage-class nfs default, you need to do this
 ```
   kubectl patch storageclass nfs -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
@@ -45,13 +46,23 @@ $ kubectl apply -f galera_k8s.yml
 
 ### Cleanup cluster
 ```bash
-$ kubectl delete statefulset galera-ss
-$ kubectl delete svc galera-svc
-$ kubectl delete svc galera-hs
-$ kubectl delete pod mysql-0 mysql-1 mysql-2
-$ for i in $(seq 0 2); do kubectl delete pvc datadir-mysql-$i; done
+$ kubectl delete -f galera_k8s.yaml
 ```
 
+or
+
+```bash
+$ kubectl delete statefulset galera-ss -n $YOUR_NAMESPACE
+$ kubectl delete svc galera-svc -n $YOUR_NAMESPACE
+$ kubectl delete svc galera-hs -n $YOUR_NAMESPACE
+$ for i in $(seq 0 2); do kubectl delete persistentvolumeclaim datadir-mysql-$i; done
+```
+
+and then, to delete the namespace
+
+```bash
+$ kubectl delete -f galera_ns.yaml
+```
 
 ## Building
 ```bash
